@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const url = "https://fictional-sniffle-jgr5v95wrvhqpw7-4000.app.github.dev/pets/"
+const url = "http://localhost:4000/pets/"
 
 /* GET pets listing. */
 router.get('/', function (req, res, next) {

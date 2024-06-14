@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 
-const url = "https://fictional-sniffle-jgr5v95wrvhqpw7-4000.app.github.dev/auth/login"
+const url = "http://localhost:4000/auth/login"
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
