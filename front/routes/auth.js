@@ -9,6 +9,7 @@ router.get('/', function (req, res, next) {
     res.render('layout', { body: 'pages/login', title: 'Express', error: ''});
 });
 
+//comentario teste
 router.post('/', (req, res) => {
     const { username, password } = req.body
     fetch(url, {
