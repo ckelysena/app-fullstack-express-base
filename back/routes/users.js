@@ -3,6 +3,8 @@ var router = express.Router();
 var sqlite3 = require("sqlite3")
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
+var verifyJWT = require('../auth/verify-token')
+
 
 const db = new sqlite3.Database('./database/database.db')
 
@@ -23,7 +25,7 @@ db.run(`CREATE TABLE IF NOT EXISTS users (
 
 
 /* POST create a new user. */
-router.post('/register', (req, res) => {
+router.post('/register', verifyJWT, (req, res) => {
   console.log(req.body)
   const { username, password, email, phone } = req.body
 
@@ -53,7 +55,7 @@ router.post('/register', (req, res) => {
 })
 
   /* GET users listing. */
-  router.get('/', function (req, res, next) {
+  router.get('/', verifyJWT, function (req, res, next) {
   db.all('SELECT * FROM users', (err, users) => {
     if (err) {
       console.log("Usuários não foram encontrados", err)
@@ -65,7 +67,7 @@ router.post('/register', (req, res) => {
 });
 
 /* GET single user by ID. */
-router.get('/:id', function (req, res, next) {
+router.get('/:id', verifyJWT,function (req, res, next) {
   const { id } = req.params;
   db.get('SELECT * FROM users WHERE id = ?', [id], (err, row) => {
     if (err) {
@@ -122,7 +124,7 @@ router.patch('/:id', function (req, res, next) {
 });
 
 /* DELETE a user. */
-router.delete('/:id', function (req, res, next) {
+router.delete('/:id', verifyJWT, function (req, res, next) {
   const { id } = req.params;
   db.run('DELETE FROM users WHERE id = ?', [id], function (err) {
     if (err) {

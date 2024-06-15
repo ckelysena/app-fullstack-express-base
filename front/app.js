@@ -22,13 +22,15 @@ app.use(session({
 // IMPORTANDO ROTAS DE /ROUTES...
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var petsRouter = require('./routes/pets');
+var agenciasRouter = require('./routes/agencias');
+var pacotesRouter = require('./routes/pacotes');
 var authRouter = require('./routes/auth');
 
 // DEFININDO ENDPOINTS PARA ROTAS IMPORTADAS
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/pets', petsRouter);
+app.use('/agencias', agenciasRouter);
+app.use('/pacotes', pacotesRouter);
 app.use('/login', authRouter);
 
 // view engine setup

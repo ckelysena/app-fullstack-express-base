@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-const url = "http://localhost:4000/users/"
+const url = "http://localhost:4000/agencias/"
 
-/* GET users listing. */
+/* GET agencias listing. */
 router.get('/', function (req, res, next) {
   const token = req.session.token || ""
   fetch(url, { 
@@ -19,10 +19,10 @@ router.get('/', function (req, res, next) {
       }
       return res.json()
     })
-    .then((users) => {
-      let title = "Gestão de Usuários"
-      let cols = ["Id", "Nome", "Senha", "Email", "Telefone", "Ações"]
-      res.render('layout', {body: 'pages/users', title, users, cols, error: "" })
+    .then((agencias) => {
+      let title = "Gestão de Agencias"
+      let cols = ["Id", "Nome", "cnpj", "password", "telefone", "email", "Ações"]
+      res.render('layout', {body: 'pages/agencias', title, agencias, cols, error: "" })
     })
     .catch((error) => {
       console.log('Erro', error)
@@ -31,9 +31,9 @@ router.get('/', function (req, res, next) {
     })
 });
 
-// POST new user
+// POST new agencia
 router.post("/", (req, res) => {
-  const { username, password, email, phone } = req.body
+  const { username, cnpj, password, telefone, email } = req.body
   const token = req.session.token || ""
   fetch(url + '/register', {
     method: "POST",
@@ -43,7 +43,7 @@ router.post("/", (req, res) => {
 
      },
     
-    body: JSON.stringify({ username, password, email, phone })
+    body: JSON.stringify({ username, cnpj, password, telefone, email })
   })
   .then(async (res) => {
     if (!res.ok) {
@@ -52,22 +52,22 @@ router.post("/", (req, res) => {
     }
     return res.json()
   })
-    .then((user) => {
-      res.send(user)
+    .then((agencia) => {
+      res.send(agencia)
     })
     .catch((error) => {
       res.status(500).send(error)
     })
 })
 
-// UPDATE user
+// UPDATE agencia
 router.put("/:id", (req, res) => {
   const { id } = req.params
-  const { username, password, email, phone } = req.body
+  const { username, cnpj, password, telefone, email } = req.body
   fetch(url+id, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password, email, phone })
+    body: JSON.stringify({ username, cnpj, password, telefone, email })
   }).then(async (res) => {
     if (!res.ok) {
       const err = await res.json()
@@ -75,15 +75,15 @@ router.put("/:id", (req, res) => {
     }
     return res.json()
   })
-    .then((user) => {
-      res.send(user)
+    .then((agencia) => {
+      res.send(agencia)
     })
     .catch((error) => {
       res.status(500).send(error)
     })
 })
 
-// REMOVE user
+// REMOVE agencia
 router.delete("/:id", (req, res) => {
   const { id } = req.params
   const token = req.session.token || ""
@@ -99,15 +99,15 @@ router.delete("/:id", (req, res) => {
     }
     return res.json()
   })
-    .then((user) => {
-      res.send(user)
+    .then((agencia) => {
+      res.send(agencia)
     })
     .catch((error) => {
       res.status(500).send(error)
     })
 })
 
-// GET user by id
+// GET agencia by id
 router.get("/:id", (req, res) => {
   const { id } = req.params
   const token = req.session.token || ""
@@ -124,8 +124,8 @@ router.get("/:id", (req, res) => {
     }
     return res.json()
   })
-    .then((user) => {
-      res.send(user)
+    .then((agencia) => {
+      res.send(agencia)
     })
     .catch((error) => {
       res.status(500).send(error)

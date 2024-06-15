@@ -1,17 +1,15 @@
 var express = require('express');
 var router = express.Router();
-const url = "http://localhost:4000/pets/"
+const url = "http://localhost:4000/pacotes/"
 
-/* GET pets listing. */
+/* GET pacotes listing. */
 router.get('/', function (req, res, next) {
-  let title = "Gestão de Pets"
-  let cols = ["Id", "Nome", "Raça", "Cor", "Sexo", "Ações"]
-  const token = req.session.token || ""
+  let title = "Gestão de pacotes"
+  let cols = ["Id", "Nome do Pacote", "Passagem", "Local de Saida", "Local de Destino", "Ações"]
   fetch(url, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
     }
   })
     .then(async (res) => {
@@ -21,27 +19,24 @@ router.get('/', function (req, res, next) {
       }
       return res.json()
     })
-    .then((pets) => {
-      res.render('layout', { body: 'pages/pets', title, pets, cols, error: "" })
+    .then((pacotes) => {
+      res.render('layout', { body: 'pages/pacotes', title, pacotes, cols, error: "" })
     })
     .catch((error) => {
       console.log('Erro', error)
-      res.redirect('/login')
+      res.render('layout', { body: 'pages/pacotes', title: "Gestão de pacotes", error })
     })
 });
 
-// POST new pet
+// POST new pacote
 router.post("/", (req, res) => {
-  const { name, race, colour, gender } = req.body
-  const token = req.session.token || ""
+  const { nomePacote, passagem, localSaida, localDestino } = req.body
   fetch(url, {
     method: "POST",
     headers: { 
       "Content-Type": "application/json",
-      'Authorization': `Bearer ${token}`
-
-     },
-    body: JSON.stringify({ name, race, colour, gender })
+    },
+    body: JSON.stringify({ nomePacote, passagem, localSaida, localDestino })
   }).then(async (res) => {
     if (!res.ok) {
       const err = await res.json()
@@ -49,22 +44,22 @@ router.post("/", (req, res) => {
     }
     return res.json()
   })
-    .then((pet) => {
-      res.send(pet)
+    .then((pacote) => {
+      res.send(pacote)
     })
     .catch((error) => {
       res.status(500).send(error)
     })
 })
 
-// UPDATE pet
+// UPDATE pacote
 router.put("/:id", (req, res) => {
   const { id } = req.params
-  const { name, race, colour, gender } = req.body
+  const { nomePacote, passagem, localSaida, localDestino } = req.body
   fetch(url + id, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, race, colour, gender })
+    body: JSON.stringify({ nomePacote, passagem, localSaida, localDestino })
   }).then(async (res) => {
     if (!res.ok) {
       const err = await res.json()
@@ -72,23 +67,19 @@ router.put("/:id", (req, res) => {
     }
     return res.json()
   })
-    .then((pet) => {
-      res.send(pet)
+    .then((pacote) => {
+      res.send(pacote)
     })
     .catch((error) => {
       res.status(500).send(error)
     })
 })
 
-// REMOVE pet
+// REMOVE pacote
 router.delete("/:id", (req, res) => {
   const { id } = req.params
-  const token = req.session.token || ""
   fetch(url + id, {
-    method: "DELETE",
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
+    method: "DELETE"
   }).then(async (res) => {
     if (!res.ok) {
       const err = await res.json()
@@ -96,24 +87,19 @@ router.delete("/:id", (req, res) => {
     }
     return res.json()
   })
-    .then((pet) => {
-      res.send(pet)
+    .then((pacote) => {
+      res.send(pacote)
     })
     .catch((error) => {
       res.status(500).send(error)
     })
 })
 
-// GET pet by id
+// GET pacote by id
 router.get("/:id", (req, res) => {
   const { id } = req.params
-  const token = req.session.token || ""
   fetch(url + id, {
-    method: "GET",
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    }
+    method: "GET"
   }).then(async (res) => {
     if (!res.ok) {
       const err = await res.json()
@@ -121,8 +107,8 @@ router.get("/:id", (req, res) => {
     }
     return res.json()
   })
-    .then((pet) => {
-      res.send(pet)
+    .then((pacote) => {
+      res.send(pacote)
     })
     .catch((error) => {
       res.status(500).send(error)

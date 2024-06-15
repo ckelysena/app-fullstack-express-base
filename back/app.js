@@ -30,13 +30,15 @@ app.use(session({
 // IMPORTE DAS ROTAS /ROUTES...
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var petsRouter = require('./routes/pets');
+var agenciasRouter = require('./routes/agencias');
+var pacotesRouter = require('./routes/pacotes');
 var authRouter = require('./routes/auth');
 
 // DEFINI OS ENDPOINT//RECURSO PARA AS ROTAS
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/pets', petsRouter);
+app.use('/agencias', agenciasRouter);
+app.use('/pacotes', pacotesRouter);
 app.use('/auth', limiter, authRouter);
 
 // view engine setup
